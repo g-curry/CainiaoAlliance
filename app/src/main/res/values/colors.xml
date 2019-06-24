@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="textTitleColor">#03A9F4</color>
+    <color name="textBackground">#DDBF78</color>
+    <color name="textDetailColor">#898989</color>
+    <color name="textColor">#000000</color>
+    <color name="textSumColor">#EB2626</color>
+    <color name="textTimeColor">#FFFFFF</color>
+</resources>
+
+

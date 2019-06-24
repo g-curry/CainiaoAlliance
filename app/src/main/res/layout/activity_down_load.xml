@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DownLoad">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/show_layout">
+        <!--显示的标题：目标IP地址-->
+        <TextView
+            android:textSize="20dp"
+            android:id="@+id/IP_tv"
+            android:text="目标IP地址"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <!--显示的标题：目标端口号-->
+        <TextView
+            android:textSize="20dp"
+            android:id="@+id/Port_tv"
+            android:text="目标端口号"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/IP_tv"
+            android:layout_marginTop="30dp"
+            />
+
+        <!-- 用于填写ip地址的文本框-->
+        <EditText
+            android:text="192.168.4.1"
+            android:id="@+id/ip_ET"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/IP_tv"
+            />
+        <!-- 用于填写端口号的文本框-->
+        <EditText
+            android:text="8080"
+            android:id="@+id/Port_ET"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/Port_tv"
+            android:layout_alignBottom="@id/Port_tv"
+            />
+
+        <!-- 用于连接的按钮-->
+        <Button
+            android:text="连接"
+            android:id="@+id/Connect_Bt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:textSize="30dp"
+            android:onClick="Connect_onClick"
+            android:layout_below="@id/Port_tv"
+            tools:ignore="OnClick" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/show_layout">
+
+
+        <!-- 用于填写ip地址的文本框-->
+        <EditText
+            android:text="5"
+            android:id="@+id/month_et"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/I1"
+            />
+
+
+        <!-- 用于填写ip地址的文本框-->
+        <EditText
+            android:text="20"
+            android:id="@+id/day_et"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/I2"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/download_message"
+            android:onClick="Send_onClick"
+            android:text="更新"
+            android:layout_toRightOf="@id/I3"
+            />
+
+        <TextView
+            android:textSize="20dp"
+            android:id="@+id/I1"
+            android:text="更新"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:textSize="20dp"
+            android:id="@+id/I2"
+            android:text="月"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/month_et"
+            />
+
+        <TextView
+            android:textSize="20dp"
+            android:id="@+id/I3"
+            android:text="日以后的数据"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/day_et"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/test"
+            android:onClick="Test_onClick"
+            android:text="test"
+            android:layout_below="@+id/I1"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/upload"
+            android:onClick="Upload_onClick"
+            android:text="upload"
+            android:layout_below="@+id/test"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>
