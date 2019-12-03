@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <!--android:orderInCategory="1"的作用：
+        actionbar里每个item的优先级，值越大优先级越低，
+        actionbar地方不够就会放到overflow中 -->
+    <!-- order in category 中文翻译 按类别排序-->
+    <!--showAsAction的作用：将菜单显示在标题栏上，
+    其中的三个属性值
+    always：总是显示在界面上
+    never：不显示在界面上，只让出现在右边的三个点中
+    ifRoom：如果有位置才显示，不然就出现在右边的三个点中 -->
+    <item
+        android:orderInCategory="1"
+        android:id="@+id/button_reload"
+        android:title="reload"
+        android:icon="@drawable/icon_reload"
+        app:showAsAction="ifRoom"
+        />
+
+
+    <item android:id="@+id/button_connect"
+        android:orderInCategory="2"
+        android:title="connect"
+        android:icon="@drawable/icon_connect"
+        app:showAsAction="ifRoom"
+        />
+</menu>

@@ -7,16 +7,23 @@ import java.util.Date;
 
 
 /**
- * @author g_curry   2019/5/27 16:17
+ * @author g_curry   2019/5/27 16:7
  */
 public class DateUtil {
 
 	// 把 unix time --> 16:17
 
+	public static String getFormattedDateandTime(long timeStamp) { //时间戳
+
+		// 时间格式化，传入unix时间戳，毫秒，转化成HH:mm格式
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return simpleDateFormat.format(new Date(timeStamp * 1000));
+	}
+
 	public static String getFormattedTime(long timeStamp) { //时间戳
 
 		// 时间格式化，传入unix时间戳，毫秒，转化成HH:mm格式
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 		return simpleDateFormat.format(new Date(timeStamp * 1000));
 	}
 

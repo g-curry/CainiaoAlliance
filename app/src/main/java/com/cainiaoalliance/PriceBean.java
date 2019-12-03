@@ -1,20 +1,36 @@
 package com.cainiaoalliance;
 
+
+
 /**
  * @author g_curry   2019/5/27 16:09
  */
-public class PriceBean {
+public class PriceBean  {
     private String name;	    // 品名
-    private int price;	    	// 价格
-    private String date;    	// 日期
-    private long timeStamp;		// 时间戳
+    private String jiage;	    	// 价格
+    private String uuid;    	// id 引入UUID，保证唯一性，选取ID进行增删
 
-    private String uuid;    	// id 引入UUID
+    public PriceBean(String name, String price) {
 
-    public PriceBean(){
-        timeStamp = System.currentTimeMillis();
-        date = DateUtil.getFormattedDate();
+        this.name = name;
+        this.jiage = price;
     }
+
+    public PriceBean(String name) {
+
+        this.name = name;
+    }
+
+    public PriceBean() {
+
+    }
+
+//    public PriceBean{
+//
+//    uuid = UUID.randomUUID().toString();
+//    }
+
+
 
     public String getName() {
         return name;
@@ -24,35 +40,19 @@ public class PriceBean {
         this.name = name;
     }
 
-    public int getPrice() {
-        return price;
+    public String getJiage() {
+        return jiage;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setJiage(String jiage) {
+        this.jiage = jiage;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+//    public String getUuid() {
+//        return uuid;
+//    }
+//
+//    public void setUuid(String uuid) {
+//        this.uuid = uuid;
+//    }
 }

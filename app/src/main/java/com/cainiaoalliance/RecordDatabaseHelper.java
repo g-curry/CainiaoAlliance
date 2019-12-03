@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -18,10 +19,13 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
 
     private static String TAG = "RecordDatabaseHelper";
     public static final String SELECT_MESSAGE_DB = "select  * from message where date = ?;";
+    public static final String SELECT_MESSAGE = "select  * from message;";
+    public static final String SELECT_PRICE= "select  * from price;";
     public static final String SELECT_RECORD_DATE = "select DISTINCT * from message order by date asc;";
-    public static final String SELECT_RECORD_ID = "select DISTINCT * from message order by messageid;";
-
-    public static final String DB_NAME = "message";		// 数据库名称CainiaoAlliance
+    public static final String SELECT_RECORD_ID = "select DISTINCT * from message order by messageid asc;";
+    public static final String DB_NAME = "CainiaoAlliance";		// 数据库名称CainiaoAlliance
+    public static final String TABLE_A_NAME = "message";		// 数据表A-订单详情message
+    public static final String TABLE_B_NAME = "price";		// 数据表B-价格表详情price
     public static final String CREATE_MESSAGE_DBA = "create table message ("  //数据表A-订单详情message
             + "id integer primary key autoincrement, "
             + "messageid text, "
@@ -33,6 +37,11 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
             + "time text, "
             + "date date);";
 
+        public static final String CREATE_PRICE_DBB = "create table price ("  //数据表B-价格表详情price
+            + "id integer primary key autoincrement, "
+            + "name text, "
+            + "jiage text);";
+
 
     public RecordDatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -41,7 +50,7 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_MESSAGE_DBA);
-//        db.execSQL(CREATE_PRICE_DBB);
+        db.execSQL(CREATE_PRICE_DBB);
     }
 
     // 更新数据库
@@ -49,6 +58,8 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
+
 
     // 增数据表A-订单详情message
     public long addMessage(MessageBean bean) {
@@ -63,26 +74,26 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
         values.put("time", bean.getTimeStamp());
         values.put("date", bean.getDate());
 
-        long rowId = db.insert(DB_NAME, null, values);
+        long rowId = db.insert(TABLE_A_NAME, null, values);
         values.clear();
         return rowId;
     }
 
-    // 改表A
-    public void editMessage(String messageid, MessageBean record) {
-//        removeRecord(messageid);
-        record.setMessageid(messageid);
-//        addMessage(record);
+    // 刪
+    public void removeRecord(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_A_NAME, "name = ?", new String[]{name});
     }
 
-    // 查表A
-    public LinkedList<MessageBean> readMessage(String dataStr) {
+    // 查表A  查询表中所有内容，传递给MySql使用
+    public LinkedList<MessageBean> readMessagea() {
 
         LinkedList<MessageBean> records = new LinkedList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(SELECT_MESSAGE_DB, new String[]{dataStr});
+        SQLiteDatabase dbR = this.getReadableDatabase();
+//        Cursor cursor = dbR.query("message", null, null, null, null, null, null);
+        Cursor cursor = dbR.rawQuery(SELECT_MESSAGE, null);
 
-        if (cursor.moveToFirst()) {
+
             while (cursor.moveToNext()) {
                 String messageid = cursor.getString(cursor.getColumnIndex("messageid"));
                 String name = cursor.getString(cursor.getColumnIndex("name"));
@@ -105,10 +116,44 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
 
                 records.add(record);
             }
+
+        cursor.close();
+        return records;
+    }
+
+
+    // 查表A  通过读取当天日期的方式  数据供页面ListView使用
+    public LinkedList<MessageBean> readMessage(String dataStr) {
+
+        LinkedList<MessageBean> records = new LinkedList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(SELECT_MESSAGE_DB, new String[]{dataStr});
+        while (cursor.moveToNext()) {
+            String messageid = cursor.getString(cursor.getColumnIndex("messageid"));
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String price = cursor.getString(cursor.getColumnIndex("price"));
+            String weight = cursor.getString(cursor.getColumnIndex("weight"));
+            String sum = cursor.getString(cursor.getColumnIndex("sum"));
+            String vip = cursor.getString(cursor.getColumnIndex("vip"));
+            String timeStamp = cursor.getString(cursor.getColumnIndex("time"));
+            String date = cursor.getString(cursor.getColumnIndex("date"));
+
+            MessageBean record = new MessageBean();
+            record.setMessageid(messageid);
+            record.setName(name);
+            record.setPrice(price);
+            record.setWeight(weight);
+            record.setSum(sum);
+            record.setVip(vip);
+            record.setTimeStamp(timeStamp);
+            record.setDate(date);
+
+            records.add(record);
         }
         cursor.close();
         return records;
     }
+
 
     //读取哪一天有数据，返回数据的天数
     public LinkedList<String> getAvailableDate() {
@@ -117,106 +162,125 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(SELECT_RECORD_DATE, new String[]{});
 
-        if (cursor.moveToFirst()) {
-            while (cursor.moveToNext()) {
+        if (cursor.moveToFirst()){
+            do{
                 String date = cursor.getString(cursor.getColumnIndex("date"));
-                // 同一天有多笔订单，时间只显示一天
-                if (!dates.contains(date)) {
+                if (!dates.contains(date)){
                     dates.add(date);
                 }
-            }
+            }while (cursor.moveToNext());
         }
+
         cursor.close();
         return dates;
     }
 
 
-    //读取重复的订单号，
-    public LinkedList<String> getAvailableMessageId() {
-
-        LinkedList<String> MessId = new LinkedList<>();
+    //读取哪一天有数据，返回数据的天数
+    public String getMaxMessageId() {
+        String maxMessageId;
+        LinkedList<String> messageId = new LinkedList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(SELECT_RECORD_ID, new String[]{});
 
-        if (cursor.moveToFirst()) {
-            while (cursor.moveToNext()) {
+        if (cursor.moveToFirst()){
+            do{
                 String messageid = cursor.getString(cursor.getColumnIndex("messageid"));
-
-                if (!MessId.contains(messageid)) {
-                    MessId.add(messageid);
+                if (!messageId.contains(messageid)){
+                    messageId.add(messageid);
                 }
-            }
+            }while (cursor.moveToNext());
         }
         cursor.close();
-        return MessId;
+        maxMessageId = Collections.max(messageId);
+        Log.d("maxMessageId", "====getMaxMessageId:   " + maxMessageId);
+        return maxMessageId;
     }
 
-    //    public static final String CREATE_PRICE_DBB = "create table price ("  //数据表B-价格表详情price
-//            + "id integer primary key autoincrement, "
-//            + "name text, "
-//            + "price integer, "
-//            + "time integer, "
-//            + "date date, "
-//            + "uuid text);";
-
-//    public long addPrice(PriceBean bean) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put("name", bean.getName());
-//        values.put("price", bean.getPrice());
-//        values.put("time", bean.getTimeStamp());
-//        values.put("date", bean.getDate());
-//        values.put("uuid", bean.getUuid());
-//
-//        long rowId = db.insert(DB_NAME, null, values);
-//        Log.d("RecordDatabaseHelper", bean.getUuid() + "add");
-//        values.clear();
-//        return rowId;
-// 刪
-//    public void removeRecord(int messageid) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        db.delete(DB_NAME, "messageid = ?",messageid);
 
 
-//    }
 
-//    }
+    //表B  增加价格
+    public boolean addPrice(PriceBean bean) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-    // 改表B
-//    public void editPrice(String uuid, PriceBean record) {
-////        removeRecord(uuid);
-//        record.setUuid(uuid);
-//        addPrice(record);
-//    }
+        ContentValues values = new ContentValues();
+        values.put("name", bean.getName());
+        values.put("jiage", bean.getJiage());
+
+        long insert = db.insert(TABLE_B_NAME, null, values);
+        Log.d("Add Price", bean.getName() + "    " + bean.getJiage());
+        values.clear();
+        db.close();
+        if(insert !=-1){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 
-//    // 查表B
-//    public LinkedList<PriceBean> readPrice(String dataStr) {
-//
-//        LinkedList<PriceBean> records = new LinkedList<>();
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        Cursor cursor = db.rawQuery(SELECT_PRICE_DB, new String[]{dataStr});
-//
-//        if (cursor.moveToFirst()) {
-//            while (cursor.moveToNext()) {
-//                String name = cursor.getString(cursor.getColumnIndex("name"));
-//                int price = cursor.getInt(cursor.getColumnIndex("price"));
-//                long timeStamp = cursor.getLong(cursor.getColumnIndex("time"));
-//                String date = cursor.getString(cursor.getColumnIndex("date"));
+    // 刪
+    public void removePriceRecord(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_B_NAME, "name = ?", new String[]{name});
+    }
+
+    // 改
+    public boolean editPriceRecord(String name, String jiage) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("jiage", jiage);
+        long edit = db.update(TABLE_B_NAME, values, "name=?", new String[]{name});
+        values.clear();
+        db.close();
+        if(edit !=-1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     *通过名字查询价格表
+     * @param priceBean
+     * @return
+     */
+    public PriceBean findNameFromPrice(PriceBean priceBean ){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from price where name=?", new String[]{priceBean.getName()});
+        PriceBean s = new PriceBean();
+        while(cursor.moveToNext()){
+//            String name = cursor.getString(1);
+            s.setName(priceBean.getName());
+        }
+        cursor.close();
+        db.close();
+        return s;
+    }
+
+    /**
+     *查询价格表的所有内容 用于listview展示
+     * @return
+     */
+    public LinkedList<PriceBean> readPrice() {
+
+        LinkedList<PriceBean> records_price = new LinkedList<>();
+        SQLiteDatabase dbR = this.getReadableDatabase();
+        Cursor cursor = dbR.rawQuery(SELECT_PRICE, null);
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                String jiage = cursor.getString(cursor.getColumnIndex("jiage"));
 //                String uuid = cursor.getString(cursor.getColumnIndex("uuid"));
-//
-//                PriceBean record = new PriceBean();
-//                record.setName(name);
-//                record.setPrice(price);
-//                record.setTimeStamp(timeStamp);
-//                record.setDate(date);
+                PriceBean record = new PriceBean();
+                record.setName(name);
+                record.setJiage(jiage);
 //                record.setUuid(uuid);
-//
-//                records.add(record);
-//            }
-//        }
-//        cursor.close();
-//        return records;
-//    }
+                records_price.add(record);
+            }
+        cursor.close();
+        return records_price;
+    }
 
 }

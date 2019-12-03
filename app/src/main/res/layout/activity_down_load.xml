@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DownLoad">
+    tools:context=".DownLoad"
+    android:orientation="vertical">
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/show_layout">
+        android:id="@+id/show_layout"
+        android:padding="6dp">
+
+        <ProgressBar
+            android:id="@+id/progressBar21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            />
+
         <!--显示的标题：目标IP地址-->
         <TextView
             android:textSize="20dp"
             android:id="@+id/IP_tv"
-            android:text="目标IP地址"
+            android:text="账  号: "
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
@@ -22,30 +36,32 @@
         <TextView
             android:textSize="20dp"
             android:id="@+id/Port_tv"
-            android:text="目标端口号"
+            android:text="密  码: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/IP_tv"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="6dp"
             />
 
         <!-- 用于填写ip地址的文本框-->
         <EditText
             android:text="192.168.4.1"
             android:id="@+id/ip_ET"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/IP_tv"
-            />
+            android:gravity="center"/>
+
         <!-- 用于填写端口号的文本框-->
         <EditText
             android:text="8080"
             android:id="@+id/Port_ET"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="45dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/Port_tv"
-            android:layout_alignBottom="@id/Port_tv"
-            />
+            android:gravity="center"/>
 
         <!-- 用于连接的按钮-->
         <Button
@@ -55,92 +71,242 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:textSize="30dp"
+            android:layout_marginTop="12dp"
             android:onClick="Connect_onClick"
             android:layout_below="@id/Port_tv"
             tools:ignore="OnClick" />
-
     </RelativeLayout>
 
-    <RelativeLayout
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_height="0.5dp"-->
+        <!--android:layout_marginLeft="6dp"-->
+        <!--android:layout_marginRight="6dp"-->
+        <!--android:background="@color/textDetailColor"/>-->
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/show_layout">
+        android:padding="6dp"
+        android:layout_below="@id/show_layout"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_weight="1"
+                android:padding="6dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_xiugai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:text="修改价格"
+                    android:textSize="30dp" />
 
 
-        <!-- 用于填写ip地址的文本框-->
-        <EditText
-            android:text="5"
-            android:id="@+id/month_et"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/I1"
-            />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
 
-        <!-- 用于填写ip地址的文本框-->
-        <EditText
-            android:text="20"
-            android:id="@+id/day_et"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/I2"
-            />
+                    <TextView
+                        android:textSize="20dp"
+                        android:id="@+id/I1"
+                        android:text="修改"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
 
+                    <EditText
+                        android:id="@+id/month_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/I1"
+                        android:text="苹果"
+                        android:gravity="center"
+                        />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/download_message"
-            android:onClick="Send_onClick"
-            android:text="更新"
-            android:layout_toRightOf="@id/I3"
-            />
+                    <TextView
+                        android:textSize="20dp"
+                        android:id="@+id/I2"
+                        android:text="价格为"
+                        android:layout_below="@id/I1"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
 
+                    <EditText
+                        android:id="@+id/day_et"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/I2"
+                        android:layout_below="@id/I1"
+                        android:gravity="center"
+                        android:text="20" />
+
+                    <TextView
+                        android:textSize="20dp"
+                        android:id="@+id/I3"
+                        android:text="元/Kg"
+                        android:layout_toRightOf="@+id/day_et"
+                        android:layout_below="@+id/I1"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <Button
+                        android:id="@+id/reload_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="Reload_onClick"
+                        android:layout_alignParentBottom="true"
+                        android:textSize="25dp"
+                        android:text="确定"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/textDetailColor"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:padding="6dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:text="单片机数据更新"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/update_price"
+                    android:onClick="update_onClick"
+                    android:textSize="30dp"
+                    android:text="更新价格"
+                    />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/download_message"
+                    android:onClick="Send_onClick"
+                    android:textSize="30dp"
+                    android:text="更新数据"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
         <TextView
-            android:textSize="20dp"
-            android:id="@+id/I1"
-            android:text="更新"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+            android:layout_width="match_parent"
 
+            android:layout_height="0.5dp"
+            android:background="@color/textDetailColor"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:text="数据"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/test"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/I1"
+                    android:onClick="Test_onClick"
+                    android:text="试验按钮"
+                    android:textSize="30dp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/textDetailColor"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:text="云数据库更新"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/test"
+                    android:text="更新数据到云端"
+                    android:textSize="30dp" />
+            </LinearLayout>
+        </LinearLayout>
         <TextView
-            android:textSize="20dp"
-            android:id="@+id/I2"
-            android:text="月"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/month_et"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/textDetailColor"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="226dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-        <TextView
-            android:textSize="20dp"
-            android:id="@+id/I3"
-            android:text="日以后的数据"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/day_et"
-            />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_twitter_bird"/>
+
+        </LinearLayout>
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/test"
-            android:onClick="Test_onClick"
-            android:text="test"
-            android:layout_below="@+id/I1"
-            />
+    </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/upload"
-            android:onClick="Upload_onClick"
-            android:text="upload"
-            android:layout_below="@+id/test"
-            />
 
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>

@@ -32,12 +32,12 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-//    public void reload() {
-//        for (MainFragment fragment : fragments) {
-//            fragment.reload();
-//        }
-//
-//    }
+    public void reload() {
+        for (MainFragment fragment : fragments) {
+            fragment.reload();
+        }
+
+    }
 
     public int getLastIndex() {
         return fragments.size() - 1;

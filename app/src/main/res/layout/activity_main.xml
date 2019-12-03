@@ -30,9 +30,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:paddingTop="20dp"
+                    android:paddingTop="10dp"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp"/>
+                    android:textSize="50dp"/>
+                <!--android:onClick="data_tv_onclick"-->
 
                 <TextView
                     android:id="@+id/currency_text"
@@ -44,8 +45,8 @@
                     android:layout_toRightOf="@id/amount_text"
                     android:layout_toEndOf="@id/amount_text"
                     android:layout_marginRight="30dp"
-                    android:layout_marginTop="30dp"
-                    android:textSize="50sp"
+                    android:layout_marginTop="3dp"
+                    android:textSize="50dp"
                     android:textColor="#FFFFFF"
                     />
 

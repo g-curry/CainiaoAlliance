@@ -1,16 +1,19 @@
 package com.cainiaoalliance;
 
 import android.annotation.SuppressLint;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 
 /**
@@ -24,12 +27,17 @@ public class MainFragment extends Fragment {
     private MessageListViewAdapter messageListViewAdapter;
 
     private LinkedList<MessageBean> records = new LinkedList<>();
-    private String date = "";
+    private String date = null;
 
     @SuppressLint("ValidFragment")
     public MainFragment(String date) {
-        this.date = date;
+
+        if(date != null)this.date = date;
         records = GlobalUtil.getInstance().databaseHelper.readMessage(date);
+
+        Log.d("MainFragment","===========");
+        Log.d("records", String.valueOf(records));
+
     }
 
     public MainFragment() {
@@ -43,22 +51,19 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
-////    当数据更新时重载界面
-//    public void reload() {
-//        records = GlobalUtil.getInstance().databaseHelper.readMessage(date);
-//        if (messageListViewAdapter == null) {
-//            // 刷新页面
-////            mTextView.setText(date);
-////            messageListViewAdapter = new MessageListViewAdapter(getContext());
-//            messageListViewAdapter = new MessageListViewAdapter(getActivity().getApplicationContext());
-//        }
-//        messageListViewAdapter.setData(records);
-//        mListView.setAdapter(messageListViewAdapter);
-//
-//        if (messageListViewAdapter.getCount() > 0) {
-//            rootView.findViewById(R.id.no_record_layout).setVisibility(View.INVISIBLE);
-//        }
-//    }
+//    当数据更新时重载界面
+    public void reload() {
+        records = GlobalUtil.getInstance().databaseHelper.readMessage(date);
+        if (messageListViewAdapter == null) {
+            messageListViewAdapter = new MessageListViewAdapter(getActivity().getApplicationContext());
+        }
+        messageListViewAdapter.setData(records);
+        mListView.setAdapter(messageListViewAdapter);
+
+        if (messageListViewAdapter.getCount() > 0) {
+            rootView.findViewById(R.id.no_record_layout).setVisibility(View.INVISIBLE);
+        }
+    }
 
     //初始化界面
     private void initView() {
@@ -77,11 +82,25 @@ public class MainFragment extends Fragment {
     }
 
     public double getTotalCost() {
-        double totalCost = 0;
+        DecimalFormat df = new DecimalFormat(".00");
+        double totalCost;
+        double dftotalCost = 0;
 
         for (MessageBean record : records) {
-             totalCost += Double.parseDouble(record.getSum());
+            Log.d("getTotalCost","===========");
+            Log.d("records", String.valueOf(records));
+//            dftotalCost += Double.parseDouble(record.getSum());
+            if(record.getVip().length() != 2 ){
+                double sumbefore = Double.parseDouble(record.getSum());
+                double sumnow = Double.parseDouble(df.format(sumbefore * 0.9));
+                String sumshow = new String(String.valueOf(sumnow));
+                dftotalCost += Double.parseDouble(sumshow);
+            }
+            else{
+                dftotalCost += Double.parseDouble(record.getSum());
+            }
         }
+        totalCost = Double.parseDouble(df.format(dftotalCost));//显示小数点后两位
         return totalCost;
     }
 }

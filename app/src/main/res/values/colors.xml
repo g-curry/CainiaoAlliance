@@ -9,6 +9,7 @@
     <color name="textColor">#000000</color>
     <color name="textSumColor">#EB2626</color>
     <color name="textTimeColor">#FFFFFF</color>
+    <color name="textVip">#FFC107</color>
 </resources>
 
 
